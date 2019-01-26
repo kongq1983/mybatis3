@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- 方法一： 从外部指定properties配置文件, 除了使用resource属性指定外，还可通过url属性指定url-->
+    <!--<properties resource="dbConfig.properties" ></properties>-->
+    <!-- 方法二： 直接配置为xml -->
+    <properties>
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&amp;serverTimezone=GMT&amp;useSSL=false"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </properties>
+    <typeAliases>
+        <!--
+        通过package, 可以直接指定package的名字， mybatis会自动扫描你指定包下面的javabean,
+        并且默认设置一个别名，默认的名字为： javabean 的首字母小写的非限定类名来作为它的别名。
+        也可在javabean 加上注解@Alias 来自定义别名， 例如： @Alias(user)
+         -->
+        <package name="com.kq.entity"/>
+    </typeAliases>
+    <typeHandlers>
+        <!--当配置package的时候，mybatis会去配置的package扫描TypeHandler-->
+       <!-- <package name="com.lf.typehandle"/>-->
+        <!--handler属性直接配置我们要指定的TypeHandler-->
+        <!--<typeHandler  handler="com.lf.typehandle.BaseEnumTypeHandle" javaType="com.lf.dict.Gender"/>-->
+    </typeHandlers>
+    <!--<plugins>
+        <plugin interceptor="com.lf.plugin.MyBatisPlugin">
+            <property name="name" value="你好"></property>
+        </plugin>
+    </plugins>-->
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+
+                <!-- 上面指定了数据库配置文件， 配置文件里面也是对应的这四个属性 -->
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+
+        <!-- 我再指定一个environment -->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <!-- 与上面的url不一样 -->
+                <property name="url" value="jdbc:mysql://localhost:3306/demo"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+  <!--  <mappers>
+        <mapper class="com.kq.mapper.AccountMapper"></mapper>
+    </mappers>-->
+
+    <mappers>
+        <mapper resource="mapper/AccountMapper.xml"/>
+    </mappers>
+
+</configuration>
+
